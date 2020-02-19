@@ -12,7 +12,7 @@ export class TournamentResolvers {
     async getTournament(@Args('id') id: Number): Promise<Tournament> {
         const helloTournament: Tournament = new Tournament(); 
         helloTournament.id = 5;
-        helloTournament.name = 'Premier test';
+        helloTournament.name = 'Premier test avec HMR';
         return new Promise((resolve) => resolve(helloTournament));
     }
     
