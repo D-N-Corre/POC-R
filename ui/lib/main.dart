@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stetho/flutter_stetho.dart';
+
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:poc_r/config/graphql_configuration.dart';
 
 import 'package:poc_r/features/login/data/repositories/user_repository.dart';
 import 'package:poc_r/features/login/presentation/bloc/authentication_bloc.dart';
@@ -13,6 +17,8 @@ import 'package:poc_r/features/core/presentation/pages/home_page.dart';
 import 'package:poc_r/features/core/presentation/widgets/loading_indicator.dart';
 
 import 'package:poc_r/features/login/presentation/bloc/authentication_event.dart';
+
+GraphqlConfiguration graphqlConfiguration = GraphqlConfiguration();
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -35,15 +41,23 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() {
+  Stetho.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
+
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context) {
-        return AuthenticationBloc(userRepository: userRepository)
-          ..add(AppStarted());
-      },
-      child: App(userRepository: userRepository),
+    GraphQLProvider(
+      client: graphqlConfiguration.client,
+      child: CacheProvider(
+        child: BlocProvider<AuthenticationBloc>(
+          create: (context) {
+            return AuthenticationBloc(userRepository: userRepository)
+              ..add(AppStarted());
+          },
+          child: App(userRepository: userRepository),
+        ),
+      ),
     ),
   );
 }
