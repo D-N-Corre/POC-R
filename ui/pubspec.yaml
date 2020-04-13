@@ -26,9 +26,13 @@ dependencies:
   graphql_flutter: ^3.0.0
   equatable: ^1.1.0
   meta: ^1.1.8
-  http: ^0.12.0+4
+  dio: ^3.0.9
+  rxdart: ^0.23.1
   flutter_stetho: ^0.5.2
   cupertino_icons: ^0.1.2
+  firebase_auth: ^0.15.5+3
+  google_sign_in: ^4.3.0
+  flutter_secure_storage: ^3.3.2
 
 dev_dependencies:
   flutter_test:

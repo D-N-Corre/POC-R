@@ -5,6 +5,12 @@
  */
 
 /* tslint:disable */
+export abstract class IMutation {
+    abstract authenticate(username: string, password: string): User | Promise<User>;
+
+    abstract logout(): boolean | Promise<boolean>;
+}
+
 export abstract class IQuery {
     abstract getTournament(id: number): Tournament | Promise<Tournament>;
 
@@ -12,6 +18,11 @@ export abstract class IQuery {
 }
 
 export class Tournament {
+    id: number;
+    name?: string;
+}
+
+export class User {
     id: number;
     name?: string;
 }

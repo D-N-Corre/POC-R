@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:poc_r/features/login/presentation/bloc/login_bloc.dart';
-import 'package:poc_r/features/login/presentation/bloc/login_event.dart';
-import 'package:poc_r/features/login/presentation/bloc/login_state.dart';
+import 'package:poc_r/features/user/bloc/login_bloc.dart';
+import 'package:poc_r/features/user/bloc/login_event.dart';
+import 'package:poc_r/features/user/bloc/login_state.dart';
 
 class LoginForm extends StatefulWidget {
   @override

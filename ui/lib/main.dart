@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_stetho/flutter_stetho.dart';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:poc_r/config/graphql_configuration.dart';
+import 'package:poc_r/features/user/data/repositories/authentication_repository.dart';
+import 'package:poc_r/features/user/data/repositories/interfaces/authentication_repository_interface.dart';
 
-import 'package:poc_r/features/login/data/repositories/user_repository.dart';
-import 'package:poc_r/features/login/presentation/bloc/authentication_bloc.dart';
-import 'package:poc_r/features/login/presentation/bloc/authentication_state.dart';
-import 'package:poc_r/features/login/presentation/pages/login_page.dart';
-import 'package:poc_r/features/login/presentation/pages/spash_page.dart';
+import 'package:poc_r/features/user/bloc/authentication_bloc.dart';
+import 'package:poc_r/features/user/bloc/authentication_state.dart';
+import 'package:poc_r/features/user/pages/login_page.dart';
 
-import 'package:poc_r/features/core/presentation/pages/home_page.dart';
-import 'package:poc_r/features/core/presentation/widgets/loading_indicator.dart';
+import 'package:poc_r/features/home/pages/spash_page.dart';
+import 'package:poc_r/features/home/pages/home_page.dart';
+import 'package:poc_r/features/home/widgets/loading_indicator.dart';
 
-import 'package:poc_r/features/login/presentation/bloc/authentication_event.dart';
+import 'package:poc_r/features/user/bloc/authentication_event.dart';
 
 GraphqlConfiguration graphqlConfiguration = GraphqlConfiguration();
 
@@ -44,7 +46,9 @@ void main() {
   Stetho.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final userRepository = UserRepository();
+
+  final AuthenticationRepositoryInterface authenticationRepository =
+      AuthenticationRepository();
 
   runApp(
     GraphQLProvider(
@@ -52,10 +56,11 @@ void main() {
       child: CacheProvider(
         child: BlocProvider<AuthenticationBloc>(
           create: (context) {
-            return AuthenticationBloc(userRepository: userRepository)
+            return AuthenticationBloc(
+                authenticationRepository: authenticationRepository)
               ..add(AppStarted());
           },
-          child: App(userRepository: userRepository),
+          child: App(authenticationRepository: authenticationRepository),
         ),
       ),
     ),
@@ -63,9 +68,9 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final UserRepository userRepository;
+  final AuthenticationRepositoryInterface authenticationRepository;
 
-  App({Key key, @required this.userRepository}) : super(key: key);
+  App({Key key, @required this.authenticationRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +84,8 @@ class App extends StatelessWidget {
             return HomePage();
           }
           if (state is AuthenticationUnauthenticated) {
-            return LoginPage(userRepository: userRepository);
+            return LoginPage(
+                authenticationRepository: authenticationRepository);
           }
           if (state is AuthenticationLoading) {
             return LoadingIndicator();
