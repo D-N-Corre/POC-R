@@ -9,7 +9,7 @@ import 'package:poc_r/features/user/bloc/authentication_bloc.dart';
 import 'package:poc_r/features/user/bloc/authentication_event.dart';
 import 'package:poc_r/features/user/bloc/login_event.dart';
 import 'package:poc_r/features/user/bloc/login_state.dart';
-import 'package:poc_r/features/user/models/token_model.dart';
+import 'package:poc_r/features/user/models/token_details_model.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationRepositoryInterface authenticationRepository;
@@ -31,9 +31,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         await authenticationRepository.authenticate(
             provider: AuthenticationProviderEnum.google);
-        TokenModel tokenModel = await authenticationRepository.getToken();
 
-        authenticationBloc.add(LoggedIn(token: tokenModel));
+        TokenDetailsModel tokenDetailsModel =
+            await authenticationRepository.getTokenDetails();
+
+        authenticationBloc.add(LoggedIn(token: tokenDetailsModel));
 
         yield LoginInitial();
       } catch (error) {

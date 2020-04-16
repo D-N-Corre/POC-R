@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,13 +9,15 @@ import 'package:poc_r/features/user/data/datasources/authentication_provider.dar
 import 'package:poc_r/features/user/data/datasources/queries/login_query.dart';
 
 import 'package:poc_r/features/user/data/repositories/interfaces/authentication_repository_interface.dart';
-import 'package:poc_r/features/user/models/token_model.dart';
+import 'package:poc_r/features/user/models/token_details_model.dart';
 import 'package:poc_r/features/user/models/user_model.dart';
 
 class AuthenticationRepository implements AuthenticationRepositoryInterface {
   final AuthenticationProvider _authProvider = AuthenticationProvider();
 
-  GraphqlConfiguration graphQLConfiguration = GraphqlConfiguration();
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
+  final String _storageTokenKey = 'token';
+
   LoginQuery query = LoginQuery();
 
   // Future<String> authenticate({
@@ -37,17 +40,34 @@ class AuthenticationRepository implements AuthenticationRepositoryInterface {
   //   return 'token';
   // }
 
+  Future<void> _persistToken(String token) async {
+    if (token != null) {
+      return await _storage.write(key: _storageTokenKey, value: token);
+    }
+  }
+
+  Future<void> _deleteToken() async {
+    return await _storage.delete(key: _storageTokenKey);
+  }
+
   @override
   Future<bool> authenticate(
       {@required AuthenticationProviderEnum provider,
       String username,
       String password}) async {
+    bool success = false;
     switch (provider) {
       case AuthenticationProviderEnum.google:
-        return await _authProvider.signInGoogle();
+        success = await _authProvider.signInGoogle();
+        break;
       default:
-        return null;
+        break;
     }
+    if (success) {
+      TokenDetailsModel tokenDetailsModel = await getTokenDetails();
+      _persistToken(tokenDetailsModel?.token);
+    }
+    return success;
   }
 
   @override
@@ -64,12 +84,12 @@ class AuthenticationRepository implements AuthenticationRepositoryInterface {
   }
 
   @override
-  Future<TokenModel> getToken() async {
+  Future<TokenDetailsModel> getTokenDetails() async {
     IdTokenResult token = await _authProvider.getToken();
 
     if (token == null) return null;
 
-    return TokenModel(
+    return TokenDetailsModel(
         token: token.token,
         authTime: token?.authTime,
         expirationTime: token?.expirationTime,
@@ -79,8 +99,18 @@ class AuthenticationRepository implements AuthenticationRepositoryInterface {
   }
 
   @override
+  Future<String> getToken() async {
+    return await _storage.read(key: _storageTokenKey);
+  }
+
+  @override
   Future<bool> signOut() async {
-    bool success = await _authProvider.signOut();
-    return success;
+    try {
+      bool success = await _authProvider.signOut();
+      await _deleteToken();
+      return success;
+    } catch (e, callstack) {
+      throw Exception('signOut error: $e, callstack: $callstack');
+    }
   }
 }

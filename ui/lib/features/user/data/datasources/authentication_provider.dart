@@ -32,7 +32,7 @@ class AuthenticationProvider {
 
   Future<IdTokenResult> getToken() async {
     final FirebaseUser currentUser = await getCurrentUser();
-    final IdTokenResult idToken = await currentUser.getIdToken();
+    final IdTokenResult idToken = await currentUser?.getIdToken();
 
     return idToken;
   }

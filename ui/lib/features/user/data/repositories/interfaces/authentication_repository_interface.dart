@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:poc_r/constants/authentication_provide_enum.dart';
-import 'package:poc_r/features/user/models/token_model.dart';
+import 'package:poc_r/features/user/models/token_details_model.dart';
 import 'package:poc_r/features/user/models/user_model.dart';
 
 class AuthenticationRepositoryInterface {
@@ -11,7 +11,11 @@ class AuthenticationRepositoryInterface {
     throw UnimplementedError('authenticate() is not implemented');
   }
 
-  Future<TokenModel> getToken() {
+  Future<TokenDetailsModel> getTokenDetails() {
+    throw UnimplementedError('getToken() is not implemented');
+  }
+
+  Future<String> getToken() {
     throw UnimplementedError('getToken() is not implemented');
   }
 

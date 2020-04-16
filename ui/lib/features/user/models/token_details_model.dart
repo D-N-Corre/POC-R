@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-class TokenModel {
+class TokenDetailsModel {
   final String token;
   final DateTime expirationTime;
   final DateTime authTime;
@@ -9,7 +9,7 @@ class TokenModel {
 
   final Map<dynamic, dynamic> claims;
 
-  TokenModel(
+  TokenDetailsModel(
       {@required this.token,
       this.expirationTime,
       this.authTime,
