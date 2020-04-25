@@ -7,8 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:poc_r/features/user/data/repositories/authentication_repository.dart';
-import 'package:poc_r/features/user/data/repositories/interfaces/authentication_repository_interface.dart';
+import 'package:poc_r/features/authentication/data/repositories/authentication_repository.dart';
+import 'package:poc_r/features/authentication/data/repositories/interfaces/authentication_repository_interface.dart';
 
 import 'package:poc_r/main.dart';
 
