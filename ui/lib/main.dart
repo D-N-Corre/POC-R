@@ -16,7 +16,7 @@ import 'package:poc_r/features/core/pages/spash_page.dart';
 import 'package:poc_r/features/core/widgets/layout_navigation_widget.dart';
 import 'package:poc_r/features/core/blocs/tab/tab_bloc.dart';
 
-import 'package:poc_r/features/profile/pages/profile_page.dart';
+import 'package:poc_r/features/more/pages/more_page.dart';
 
 import 'routes.dart';
 // import 'package:poc_r/features/core/widgets/loading_indicator_widget.dart';
@@ -112,13 +112,13 @@ class App extends StatelessWidget {
               }
               if (state is AuthenticationUnauthenticated) {
                 // FIXME implémenter une page d'erreur
-                return null;
+                return LayoutNavigation();
               }
               if (state is AuthenticationLoading) {
                 return SplashPage();
                 // return LoadingIndicator();
               }
-              return null;
+              return Container();
             },
           );
         },
@@ -128,8 +128,8 @@ class App extends StatelessWidget {
         Routes.stats: (context) {
           return Container();
         },
-        Routes.account: (context) {
-          return ProfilePage();
+        Routes.more: (context) {
+          return MorePage();
         },
       },
     );

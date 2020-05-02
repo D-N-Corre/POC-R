@@ -3,17 +3,17 @@ import 'package:equatable/equatable.dart';
 import './../../constants/navigation_bottom_enum.dart';
 
 abstract class TabEvent extends Equatable {
-  const TabEvent();
+  TabEvent();
 }
 
-class TabUpdated extends TabEvent {
+class TabSelected extends TabEvent {
   final NavigationBottomEnum tab;
 
-  const TabUpdated(this.tab);
+  TabSelected({this.tab});
 
   @override
   List<Object> get props => [tab];
 
   @override
-  String toString() => 'TabUpdated { tab: $tab }';
+  String toString() => 'TabSelected { tab: $tab }';
 }

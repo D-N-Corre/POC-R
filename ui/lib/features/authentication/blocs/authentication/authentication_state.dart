@@ -19,7 +19,8 @@ class AuthenticationAuthenticated extends AuthenticationState {
   List<Object> get props => [tokenDetails];
 
   @override
-  String toString() => 'TodosLoadSuccess { todos: $tokenDetails }';
+  String toString() =>
+      'AuthenticationAuthenticated { tokenDetails: $tokenDetails }';
 }
 
 class AuthenticationUnauthenticated extends AuthenticationState {}

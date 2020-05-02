@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 
+import './tab_state.dart';
 import './tab_event.dart';
-import './../../constants/navigation_bottom_enum.dart';
 
-class TabBloc extends Bloc<TabEvent, NavigationBottomEnum> {
+class TabBloc extends Bloc<TabEvent, TabState> {
   @override
-  NavigationBottomEnum get initialState => NavigationBottomEnum.dashboard;
+  TabState get initialState => TabInitial();
 
   @override
-  Stream<NavigationBottomEnum> mapEventToState(TabEvent event) async* {
-    if (event is TabUpdated) {
-      yield event.tab;
+  Stream<TabState> mapEventToState(TabEvent event) async* {
+    if (event is TabSelected) {
+      yield TabUpdated(currentTab: event.tab, previousTab: state.currentTab);
     }
   }
 }

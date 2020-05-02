@@ -21,7 +21,7 @@ class CoreKeys {
   static final dashboardTab = const Key('__dashboardTab__');
   static final exploreTab = const Key('__exploreTab__');
   static final statsTab = const Key('__statsTab__');
-  static final accountTab = const Key('__accountTab__');
+  static final moreTab = const Key('__moreTab__');
 
   // // Extra Actions
   // static final extraActionsButton = const Key('__extraActionsButton__');
